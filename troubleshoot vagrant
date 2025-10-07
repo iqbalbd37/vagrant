@@ -1,0 +1,80 @@
+Some Important commands on Vagrant 
+==============================================
+#Vagrant Directory 
+$cd ~/vagrant-cluster/shared
+vagrant up
+==============================================
+Destroy the vm using vagrant status 
+==============================================
+vagrant status
+#destroy them, use the real IDs, for example:
+cd /root/vagrant-cluster/shared
+
+vagrant destroy 6532574
+vagrant destroy 0687e7e
+vagrant destroy ec3ee73
+
+#Vagrant will ask for confirmation. Add -f to force it without prompt:
+vagrant destroy -f 6532574
+vagrant destroy -f 0687e7e
+vagrant destroy -f ec3ee73
+
+
+==============================================
+Uninstalling Vagrant 2.9.1 on Ubuntu/Debian
+==============================================
+Step 1: Check how Vagrant was installed
+$which vagrant	
+$vagrant --version
+$dpkg -l | grep vagrant
+
+Step 2: Uninstall Vagrant
+$apt remove --purge vagrant -y
+	Then remove leftover files:
+$rm -rf /opt/vagrant
+$rm -rf ~/.vagrant.d
+$rm -rf /usr/local/bin/vagrant
+
+If you installed as root, check root's config too:
+$rm -rf /root/.vagrant.d
+
+B. If installed via a downloaded binary or zip
+$rm -f /usr/local/bin/vagrant
+$rm -rf ~/.vagrant.d
+$rm -rf /root/.vagrant.d
+
+Optional: Clean up VirtualBox VMs and base boxes
+
+$vagrant global-status --prune
+$vagrant box list | awk '{print $1}' | xargs -n1 vagrant box remove -f
+$rm -rf ~/.vagrant.d
+$rm -rf /root/.vagrant.d
+
+#Verify Uninstall
+vagrant --version
+
+
+
+
+==============================================
+#Fix: Forcefully unlock and delete the stuck VMs
+Step 1: Find VirtualBox-related processes
+$ps aux | grep -i virtualbox
+	Then kill them:
+$killall -9 VBoxHeadless VBoxSVC VBoxManage
+
+#Step 2: Try to unregister again
+$VBoxManage unregistervm "node1" --delete
+$VBoxManage unregistervm "node2" --delete
+$VBoxManage unregistervm "node3" --delete
+
+Step 3: Clean Vagrant cache
+$vagrant global-status --prune
+
+Step 4: Verify cleanup
+$VBoxManage list vms
+
+
+	
+
+

@@ -1,0 +1,42 @@
+mkdir -p ~/vagrant-cluster/shared
+cd ~/vagrant-cluster/shared
+mkdir shared
+vim vagrantfile
+------------------------------------------------------------------------------------
+# Vagrantfile to create 3 Ubuntu 20.04 VMs with bridged + private network and shared folder
+
+VAGRANT_NODES = [
+  { name: "node1", ip_private: "192.168.56.11" },
+  { name: "node2", ip_private: "192.168.56.12" },
+  { name: "node3", ip_private: "192.168.56.13" }
+]
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"  # Ubuntu 20.04
+
+  # Shared folder (host to all VMs)
+  config.vm.synced_folder "./shared", "/vagrant_shared"
+
+  VAGRANT_NODES.each do |node|
+    config.vm.define node[:name] do |node_config|
+      node_config.vm.hostname = node[:name]
+
+      # Private network for internal VM communication
+      node_config.vm.network "private_network", ip: node[:ip_private]
+
+      # Bridged network (LAN access) - prompt user to select network interface
+      node_config.vm.network "public_network", bridge: "enp0s3", use_dhcp_assigned_default_route: true
+
+      # VM hardware resources
+      node_config.vm.provider "virtualbox" do |vb|
+        vb.name = node[:name]
+        vb.memory = 3096
+        vb.cpus = 1
+      end
+    end
+  end
+end
+
+------------------------------------------------------------------------------------
+$vagrant up --provider=virtualbox
+
