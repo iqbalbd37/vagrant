@@ -75,7 +75,8 @@ Step 4: Verify cleanup
 $VBoxManage list vms
 
 ==============================================
-vagrant global-status --prune
+$ vagrant global-status
+==============================================
 
 
 	
