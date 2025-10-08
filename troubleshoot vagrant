@@ -54,8 +54,6 @@ $rm -rf /root/.vagrant.d
 vagrant --version
 
 
-
-
 ==============================================
 #Fix: Forcefully unlock and delete the stuck VMs
 Step 1: Find VirtualBox-related processes
@@ -73,6 +71,19 @@ $vagrant global-status --prune
 
 Step 4: Verify cleanup
 $VBoxManage list vms
+
+==============================================
+# Reload Vagrant 
+vagrant reload
+#Reload a specific machine
+vagrant reload <machine_name>
+
+#Reload with provisioning scripts
+vagrant reload --provision
+
+#Reload with debug output
+vagrant reload --debug
+
 
 
 	
