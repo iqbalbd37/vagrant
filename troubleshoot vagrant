@@ -73,6 +73,7 @@ Step 4: Verify cleanup
 $VBoxManage list vms
 
 ==============================================
+<<<<<<< HEAD
 # Reload Vagrant 
 vagrant reload
 #Reload a specific machine
@@ -84,6 +85,10 @@ vagrant reload --provision
 #Reload with debug output
 vagrant reload --debug
 
+=======
+$ vagrant global-status
+==============================================
+>>>>>>> origin/main
 
 
 	
